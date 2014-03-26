@@ -16,7 +16,7 @@ Easily & safely insert stock images into your posts and pages from the largest s
 
 **Features:**
 
-* Over 21,000,000 free and Royalty-Free stock photos and illustrations to choose from.
+* Over 22,000,000 free and Royalty-Free stock photos and illustrations to choose from.
 * Insert directly into your posts or pages with ease
 * 100% safe, model released images
 * Image attribution automatically added
