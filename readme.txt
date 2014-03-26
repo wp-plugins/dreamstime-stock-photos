@@ -1,6 +1,6 @@
 === Dreamstime Stock Photos ===
 
-Contributors: dreamstime, ktalinu
+Contributors: dreamstime
 Tags: dreamstime, photo, image, stock, stock images, dreamstime stock images, free photos, free images, stock photos, pictures, free pictures, illustrations, free illustrations, clipart, clip art, free clipart, free clip art, royalty free, stock photography, free stock photography, photography, free photography
 Requires at least: 3.5
 Tested up to: 3.8.1
