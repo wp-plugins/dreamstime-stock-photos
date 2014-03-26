@@ -15,6 +15,7 @@ Search and insert images into your posts and pages from Dreamstime stock images 
 Easily & safely insert stock images into your posts and pages from the largest selection of free and professional stock photos online without leaving WordPress. The plugin allows you to download directly from Dreamstime's database of millions of free and commercial Royalty-Free images from within the WordPress Add Media tool. All images are model released and properly attributed so are 100% safe to use without ever having to worry about later model or photographer claims. You can also make money with automatic Dreamstime referral program integration.
 
 **Features:**
+
 * Over 21,000,000 free and Royalty-Free stock photos and illustrations to choose from.
 * Insert directly into your posts or pages with ease
 * 100% safe, model released images
