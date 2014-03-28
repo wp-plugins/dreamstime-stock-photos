@@ -49,9 +49,8 @@ class Dreamstime
       if ( basename($_SERVER['PHP_SELF']) != "media-upload.php" && basename($_SERVER['PHP_SELF']) != "post.php" && basename($_SERVER['PHP_SELF']) != "post-new.php" && basename($_SERVER['PHP_SELF']) != "admin-ajax.php") return;
     }
 
-
-    add_filter("media_upload_tabs",array($this,"build_tab"));
-    add_action("media_upload_dreamstime", array($this, "menu_handle"));
+    add_filter("media_upload_tabs",array($this,"buildTab"));
+    add_action("media_upload_dreamstime", array($this, "menuHandle"));
     add_action("admin_enqueue_scripts", array($this, "loadCssJs"));
 
     add_action('media_buttons', array($this, 'media_buttons'));
@@ -65,15 +64,12 @@ class Dreamstime
     add_action("wp_ajax_refreshAccountInfo", array($this, "refreshAccountInfo"));
     add_action("wp_ajax_toggleReferral", array($this, "toggleReferral"));
 
-
     require_once 'api.php';
     $this->api = new DreamstimeApi();
 
     if($postId = $_REQUEST['post_id']) {
       $this->postId = $postId;
     }
-
-
   }
 
 
@@ -104,20 +100,21 @@ class Dreamstime
   }
 
 
-  public function build_tab($tabs)
+  public function buildTab($tabs)
   {
     $tabs['dreamstime'] = "Add images from Dreamstime";
     return($tabs);
   }
 
-  public function menu_handle()
+  public function menuHandle()
   {
     // wp_iframe() adds css for "media" when callback function has "media_" as prefix
-    return wp_iframe(array($this,"media_controller"));
+    return wp_iframe(array($this,"mediaController"));
   }
 
-  public function media_controller()
+  public function mediaController()
   {
+
     media_upload_header();
 
     if($action = $_REQUEST['action']) {
@@ -132,8 +129,14 @@ class Dreamstime
 
     $this->getLightbox();
 
+    $isUploadsDirAvailable = $this->isUploadsDirAvailable();
     include 'interface.php';
 
+  }
+
+  public function isUploadsDirAvailable() {
+    $uploadDir = wp_upload_dir();
+    return $uploadDir['error'] === false;
   }
 
   public function search()

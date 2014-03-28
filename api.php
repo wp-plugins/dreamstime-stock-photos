@@ -170,16 +170,16 @@ class DreamstimeApi {
 
   protected function _post($data)
   {
-    $data_string = json_encode($data);
+    $dataString = json_encode($data);
 
     $ch = curl_init($this->_getApiUrl());
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
         'Content-Type: application/JSON',
-        'Content-Length: ' . strlen($data_string)
+        'Content-Length: ' . strlen($dataString)
       )
     );
     curl_setopt($ch,CURLOPT_USERAGENT, $this->ApplicationId);

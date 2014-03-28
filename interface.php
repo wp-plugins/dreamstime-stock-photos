@@ -1,4 +1,11 @@
-<!--<link rel="stylesheet" href="--><?php //echo DREAMSTIME_STATIC_URL ?><!--style.css" />-->
+<?php if(!$isUploadsDirAvailable):?>
+  <div id="message" class="error">
+    <p>
+      In order to use the plugin, you have to make sure that the <code>wp-content/uploads/</code> folder exists and is writable by Wordpress. <br />
+      How to do this? Check the official documentation page: <a href="http://codex.wordpress.org/Changing_File_Permissions" rel="nofollow" target="_blank">Changing File Permissions</a>.
+    </p>
+  </div>
+<?php endif;?>
 
 <div id="dt_tabs">
   <ul>
