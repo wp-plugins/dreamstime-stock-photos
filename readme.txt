@@ -8,15 +8,21 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Search and insert images into your posts and pages from Dreamstime stock images database.
+Search and insert images into your posts and pages from Dreamstime's vast database of Free and Royalty-Free stock photos & illustrations.
 
 == Description ==
 
-Easily & safely insert stock images into your posts and pages from the largest selection of free and professional stock photos online without leaving WordPress. The plugin allows you to download directly from Dreamstime's database of millions of free and commercial Royalty-Free images from within the WordPress Add Media tool. All images are model released and properly attributed so are 100% safe to use without ever having to worry about later model or photographer claims. You can also make money with automatic Dreamstime referral program integration.
+Easily & safely insert stock images into your posts and pages from the largest selection of free and professional stock photos online without leaving WordPress. The plugin allows you to download directly from Dreamstime's database of millions of free and commercial Royalty-Free images from within the WordPress Add Media tool. All images are model released and properly attributed so are 100% safe to use without ever having to worry about later model or photographer claims.
+
+For current Dreamstime users, the plugin is linked to your account, so if you’ve already purchased an image prior to installing the WordPress plugin, you won’t have to purchase the same image again.
+
+You can also make money with automatic Dreamstime referral program integration. Using referral links you will receive 10% of all sales and uploads made within the first 3 years for each user you refer. 
+
+Dreamstime contributors can add their own images to their blog articles without having to pay for them.
 
 **Features:**
 
-* Over 22,000,000 free and Royalty-Free stock photos and illustrations to choose from.
+* Over 22,000,000 free and Royalty-Free stock photos and illustrations to choose from
 * Insert directly into your posts or pages with ease
 * 100% safe, model released images
 * Image attribution automatically added
