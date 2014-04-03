@@ -35,7 +35,7 @@ Dreamstime contributors can add their own images to their blog articles without 
 
 == Screenshots ==
 
-1. *Editors Choiches Images* view
+1. *Editors' Choice Images* view
 2. *Search* view
 3. *Image download* view
 4. *Insert into post* view

@@ -16,7 +16,7 @@ if(!$this->images) {
 
 <div id="dt_search_results">
     <ul>
-      <?php if($this->images['featured']):?><li><a href="#featured">Editors Choices Images</a></li><?php endif;?>
+      <?php if($this->images['featured']):?><li><a href="#featured">Editors' Choice Images</a></li><?php endif;?>
       <?php if($this->lightboxId):?><li><a href="#lightboxes">My lightboxes</a></li><?php endif;?>
       <?php if($this->images['paid']):?><li><a href="#paid">Commercial Stock Images</a></li><?php endif;?>
       <?php if($this->images['free']):?><li><a href="#free">Free Stock Images</a></li><?php endif;?>
