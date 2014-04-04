@@ -1,0 +1,169 @@
+.dt_form {margin:0; padding:0;}
+.dt_clear {clear:both;}
+
+.dt_progressbar {height:6px; display:none;}
+
+.loading {height:6px !important; padding:0 !important;}
+.loading .ui-dialog-titlebar {display:none;}
+.loading .ui-dialog-content {padding:0;}
+
+#image a.toggle {display:none;}
+.dt_image {text-align:center;}
+
+#dt_tabs {border:none; padding:25px 0; line-height:1em !important; font-size:12px;}
+	/* j.ui */
+	#dt_tabs .ui-helper-reset {line-height:inherit;}
+	#dt_tabs .ui-widget-header {background:none; border:none; border-bottom:1px solid #DDD; border-radius:0; -webkit-border-radius:0; padding:0 0 0 10px;}
+	#dt_tabs .ui-tabs {padding:0 !important;}
+	#dt_tabs .ui-tabs-nav li a {color:#222;}
+	#dt_tabs .ui-tabs-panel {padding:1.4em !important;}
+	#dt_tabs .ui-corner-top {background:#FFF; border:1px solid #FFF; border-bottom:none; padding:0; -webkit-border-radius:3px 3px 0 0; -moz-border-radius:3px 3px 0 0; -o-border-radius:3px 3px 0 0; border-radius:3px 3px 0 0;}	
+		#dt_tabs .ui-corner-top.ui-state-active {border:1px solid #DDD; border-bottom:1px solid #FFF; }	
+		#dt_tabs .ui-corner-top a {font-size:12px;}
+		#dt_tabs .ui-corner-top.ui-state-active a {color:#2EA2CC; cursor:default;}
+	
+	#dt_tabs .dt_images_panel {border:1px solid #DDD !important; border-top:none !important; overflow:hidden; padding:20px !important; text-align:center; -webkit-border-radius:0; -moz-border-radius:0; -o-border-radius:0; border-radius:0;}
+	
+	/* forms */
+	#dt_tabs .dt_form {margin:0 0 25px 0; font-size:12px; overflow:hidden;}
+		#dt_tabs label, #dt_tabs input, #dt_tabs select {float:left; margin-right:3px;}
+			#dt_tabs label {padding:5px 2px 0 0;}
+	
+	#dt_tabs #dt_search_results {border-radius:0; -webkit-border-radius:0; border:none !important; position:relative; padding:0 !important; overflow:hidden;}
+		#dt_tabs #dt_search_results .ui-widget-header {background:#FFF; padding:0 !important; width:100%;}
+	
+	/* more images */
+	#dt_tabs a.more {display:inline-block; cursor:pointer; background:#2EA2CC; color:#FFF; font-size:11px; font-weight:bold; padding:3px 10px 4px 10px; text-decoration:none;}
+		#dt_tabs a.more:hover {background:#5AB7DA; color:#FFF;}
+	
+	/* transition */
+	#dt_tabs a,
+	#dt_tabs input[type=text],
+	#dt_tabs input[type=password],
+	#dt_tabs input[type=submit],
+	#dt_tabs .dt_image_th,
+	.ui-dialog button .ui-button-text,
+	.ui-dialog a,
+	.ui-dialog input[type=button],
+	.ui-dialog input[type=text],
+	.ui-dialog input[type=password] {-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; transition:all .2s ease-in-out;}
+
+	/* radius */
+	#dt_tabs a.more,
+	#dt_tabs input[type=text],
+	#dt_tabs input[type=password],
+	#dt_tabs input[type=submit],
+	#dt_tabs select,
+	#dt_tabs textarea,
+	.ui-dialog button .ui-button-text,
+	.ui-dialog input[type=button],
+	.ui-dialog input[type=text],
+	.ui-dialog input[type=password] {-webkit-border-radius:3px; -moz-border-radius:3px; -o-border-radius:3px; border-radius:3px;}
+	
+	/* inputs setup */
+	#dt_tabs input[type=text],
+	#dt_tabs input[type=password],
+	#dt_tabs select,
+	#dt_tabs textarea,
+	.ui-dialog input[type=text]
+	.ui-dialog input[type=password] {border-color:#DDD; outline:0 none;}
+		#dt_tabs input[type=text]:focus,
+		#dt_tabs input[type=password]:focus,
+		#dt_tabs select:focus,
+		#dt_tabs textarea:focus,
+		.ui-dialog input[type=text]:focus,
+		.ui-dialog input[type=password]:focus {border-color:#A7D8EB; -webkit-box-shadow:0 0 6px rgba(46,162,204,0.3); -moz-box-shadow:0 0 6px rgba(46,162,204,0.3); -o-box-shadow:0 0 6px rgba(46,162,204,0.3); box-shadow:0 0 6px rgba(46,162,204,0.3);}
+	#dt_tabs select {padding:1px !important;}
+	#dt_tabs input[type=submit] {outline:0 none;}
+	#dt_tabs input[type=submit],
+	.ui-dialog input[type=button] {border:0; cursor:pointer; background:#2EA2CC; color:#FFF; font-size:11px; font-weight:bold; padding:3px 10px 4px 10px;}
+		#dt_tabs input[type=submit]:hover,
+		.ui-dialog input[type=button]:hover {background:#5AB7DA; color:#FFF;}
+
+	/* acount panel */
+	#dt_tabs .account_panel {float:left; padding:0; min-width:400px; width:47%;}
+		#dt_tabs .account_panel h3 {font-size:15px; margin:0 0 12px 0;}
+		#dt_tabs .account_panel div {overflow:hidden; margin-bottom:4px;}
+		#dt_tabs .account_panel a {float:left; margin:5px 0 0 5px; font-size:11px;}
+		#dt_tabs .account_panel label {width:70px;}
+		#dt_tabs .account_panel input[type=text],
+		#dt_tabs .account_panel input[type=password] {width:200px;}
+		#dt_tabs .account_panel input[type=submit] {margin-left:76px;}
+		#dt_tabs .account_panel #availability {clear:both; display:block; font-size:11px; margin-left:78px; width:310px;}
+			#dt_tabs .account_panel #availability div {margin:0;}
+			#dt_tabs .account_panel #availability span {padding:3px 0 5px 0; display:inline-block;}
+			#dt_tabs .account_panel #availability a {float:none; margin:0;}
+	
+	/* listing */
+	#dt_tabs .dt_image_th {float:left; width:120px; margin:0 20px 20px 0; font-size:11px; padding:10px; cursor:default; -webkit-box-shadow:0 0 3px rgba(0,0,0,0.2); -moz-box-shadow:0 0 3px rgba(0,0,0,0.2); -o-box-shadow:0 0 3px rgba(0,0,0,0.2); box-shadow:0 0 3px rgba(0,0,0,0.2);}
+		#dt_tabs .dt_image_th:hover {-webkit-box-shadow:0 0 4px rgba(0,0,0,0.4); -moz-box-shadow:0 0 4px rgba(0,0,0,0.4); -o-box-shadow:0 0 4px rgba(0,0,0,0.4); box-shadow:0 0 4px rgba(0,0,0,0.4);}
+		#dt_tabs .dt_image_th a {display:inline-block; height:130px; overflow:hidden;}
+		#dt_tabs .dt_image_th .title {width:120px; margin:5px 0 2px 0; overflow:hidden; white-space:nowrap;}
+		div.dt_image_downloads,
+		div.dt_image_views {display:inline-block; background:#2EA2CC; color:#FFF; font-size:10px; padding:0 7px 1px 7px; line-height:16px; margin-top:5px; -webkit-border-radius:10px; -moz-border-radius:10px; -o-border-radius:10px; border-radius:10px;}
+			div.dt_image_views {background:#99CC00;}
+		#dt_tabs .dt_image_th img {max-width:120px; max-height:130px; vertical-align:middle;}
+		
+	/* my account tab */
+	#dt_tabs #dt_my_account_tab {}
+		#dt_tabs #dt_my_account_tab #lightboxes {margin:20px 0 0 0 !important; overflow:hidden;}
+			#dt_tabs #dt_my_account_tab #lightboxes .dt_form {margin-bottom:20px;}
+		#dt_tabs #dt_my_account_tab .dt_images_panel {border:none !important; padding:0 0 0 4px !important; overflow: visible !important;}	
+
+
+/* popup */
+.ui-dialog {border:none !important; -webkit-box-shadow:0 0 10px rgba(0,0,0,0.1); -moz-box-shadow:0 0 10px rgba(0,0,0,0.1); -o-box-shadow:0 0 10px rgba(0,0,0,0.1); box-shadow:0 0 10px rgba(0,0,0,0.1); font-size:12px !important; padding:0 !important; border-radius:0px !important; line-height:1em !important;}
+	.ui-dialog button {background:none !important; border:none !important; margin:0 !important; padding:0 !important;}
+		.ui-dialog button .ui-button-text {display:block; background:#2EA2CC; color:#FFF; font-size:11px; font-weight:bold; padding:4px 10px 5px 10px;}
+			.ui-dialog button:hover .ui-button-text {background:#5AB7DA;}
+
+	#dt_tabs a,
+	.ui-dialog a {outline:0 none; color:#2EA2CC;}
+		#dt_tabs a:hover,
+		.ui-dialog a:hover {color:#222;}
+	
+	.ui-dialog p {margin:0 !important; padding:5px 0 15px 0 !important; line-height:inherit !important;}
+		
+	.ui-dialog .ui-dialog-buttonpane {border:none !important; padding:10px !important; margin:0 !important;}
+	
+	.ui-dialog .ui-dialog-titlebar {padding:10px 0 !important; margin:0 10px 10px 10px !important; border:none !important; background:none !important; border-bottom:1px solid #DDD !important; border-radius:0;}
+		.ui-dialog .ui-dialog-titlebar .ui-dialog-title {font-size:14px !important; line-height:normal !important;}
+		.ui-dialog .ui-dialog-titlebar button {margin:0 !important; padding:0 !important; top:11px !important; right:0 !important;}
+		.ui-dialog .ui-dialog-titlebar button .ui-button-text {background:none !important;}
+		
+	.ui-dialog .ui-dialog-content {padding:0 10px 10px 10px !important;}
+		.ui-dialog .dt_image .image {float:none;}
+	#loading.ui-dialog-content {padding:0 !important;}			
+		
+	.ui-dialog .image-info {margin-bottom:25px;}
+		.ui-dialog .image-info h2 {font-size:17px; font-weight:normal; color:#222; line-height:normal}
+		.ui-dialog .image-info div.dt_image_downloads, 
+		.ui-dialog .image-info div.dt_image_views {font-size:11px; padding:0 8px 2px 8px; margin-top:10px;}
+	
+	.ui-dialog .prices {margin-bottom:20px;}
+	.ui-dialog .prices .license {margin-bottom:15px;}
+		.ui-dialog .prices table {width:100%; text-align:left; border-collapse:collapse;}
+			.ui-dialog .prices table th {padding:7px 5px; border-bottom:1px solid #DDD;}
+			.ui-dialog .prices table td {padding:7px 5px; border-bottom:1px solid #DDD;}
+				.ui-dialog .prices table tr:hover td {background:#EFEFEF; cursor:default;}
+	
+	.ui-dialog .download {margin-bottom:10px;}
+		.ui-dialog .download input[type=button] {font-size:14px;}
+		
+	.ui-dialog #dt_login h2 {font-size:12px; font-weight:bold;}
+	.ui-dialog #dt_login #login-form {box-shadow:none; margin:0; padding:20px;}
+		.ui-dialog #dt_login #login-form div {overflow:hidden; margin-bottom:6px;}
+			.ui-dialog #dt_login #login-form label {float:left; font-size:12px; color:#222; width:70px; padding:5px 5px 0 0;}
+			.ui-dialog #dt_login #login-form input[type=text],
+			.ui-dialog #dt_login #login-form input[type=password] {width:200px; background:#FFF; margin:0; padding:3px; font-size:inherit;}
+			.ui-dialog #dt_login #login-form input[type=button] {margin-left:75px;}
+			.ui-dialog #dt_login #create-account-link {margin:0 0 10px 95px; display:inline-block;}
+
+
+#dreamstime-media-button {float: right;}
+#dreamstime-media-button img {width: 18px; padding-bottom: 3px!important; }
+.wp-media-buttons {float: left;}
+
+.referral {height: 30px; margin-top: 20px;}
+.referral label {float: none !important; position: absolute; margin-top: -10px;}
+.referral span {float: none; padding: 0 !important; font-size: smaller; font-style: italic; display: block; position: absolute; margin: 10px 0 0 22px;}
