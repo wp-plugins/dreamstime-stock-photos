@@ -1,50 +1,3 @@
-<?php if(!$isUploadsDirAvailable):?>
-  <div id="message" class="error">
-    <p>
-      In order to use the plugin, you have to make sure that the <code>wp-content/uploads/</code> folder exists and is writable by Wordpress. <br />
-      How to do this? Check the official documentation page: <a href="http://codex.wordpress.org/Changing_File_Permissions" rel="nofollow" target="_blank">Changing File Permissions</a>.
-    </p>
-  </div>
-<?php endif;?>
-
-<div id="dt_tabs">
-  <ul>
-    <li><a href="#dt_search_tab">Search images on Dreamstime</a></li>
-    <li><a href="#dt_my_account_tab">My Dreamstime Account</a></li>
-  </ul>
-
-
-  <div id="dt_search_tab">
-    <?php include 'search.php'?>
-  </div>
-
-
-  <div id="dt_my_account_tab">
-    <?php include 'account.php'?>
-  </div>
-
-
-
-  <div id="error"></div>
-
-
-  <div id="image"></div>
-
-  <div id="dt_login">
-    <h2>Login or create an account to download the image</h2>
-    <form id="login-form">
-      <input type="hidden" name="action" value="ajxLogin">
-      <div><label>Username: </label><input type="text" name="username" value="<?php echo $_COOKIE['dreamstime_username']?>" /></div>
-      <div><label>Password: </label><input type="password" name="password" /></div>
-      <input type="button" id="login_btn" value="Login" />
-    </form>
-    <a href="javascript:;" id="create-account-link">Create Account</a>
-  </div>
-
-  <div id="loading"><div class="dt_progressbar" style="display: block"></div></div>
-
-</div>
-
 <script type="text/javascript">
   var dt_tab_index = parseInt(<?php echo $_REQUEST['dt_tab_index'] ? $_REQUEST['dt_tab_index'] : 1 ?>);
   jQuery(function($){
@@ -58,12 +11,6 @@
     $( "#loading" ).dialog({ modal: true, autoOpen: false, dialogClass: "loading", resizable: false  });
 
 
-    $('.dt_progressbar').progressbar({value: false });
-
-    //load more images
-    dt_more('featured', {action: 'more', type: 'featured'});
-    dt_more('free', {action: 'more', keywords: $('#keywords').val(), type: 'free'});
-    dt_more('paid', {action: 'more', keywords: $('#keywords').val(), type: 'paid'});
 
     $('#select-lightbox').change(function(){
       $('#lightboxes-form').submit();
@@ -99,10 +46,8 @@
       ]
     });
 
-
-
     <?php if($this->error):?>
-      dt_error('<?php echo $this->error?>');
+    dt_error('<?php echo $this->error?>');
     <?php endif;?>
 
     $( document ).ajaxError(function( event, request, settings, exception ) {
@@ -110,7 +55,55 @@
       dt_error(exception);
     });
 
-
   });
 </script>
+
+
+
+<?php if(!$isUploadsDirAvailable):?>
+  <div id="message" class="error">
+    <p>
+      In order to use the plugin, you have to make sure that the <code>wp-content/uploads/</code> folder exists and is writable by Wordpress. <br />
+      How to do this? Check the official documentation page: <a href="http://codex.wordpress.org/Changing_File_Permissions" rel="nofollow" target="_blank">Changing File Permissions</a>.
+    </p>
+  </div>
+<?php endif;?>
+
+<div id="dt_tabs">
+  <ul>
+    <li><a href="#dt_search_tab">Search images on Dreamstime</a></li>
+    <li><a href="#dt_my_account_tab">My Dreamstime Account</a></li>
+  </ul>
+
+  <div id="dt_search_tab">
+    <?php include 'search.php'?>
+  </div>
+
+
+  <div id="dt_my_account_tab">
+    <?php include 'account.php'?>
+  </div>
+
+
+
+  <div id="error"></div>
+
+
+  <div id="image"></div>
+
+  <div id="dt_login">
+    <h2>Login or create an account to download the image</h2>
+    <form id="login-form">
+      <input type="hidden" name="action" value="ajxLogin">
+      <div><label>Username: </label><input type="text" name="username" value="<?php echo $_COOKIE['dreamstime_username']?>" /></div>
+      <div><label>Password: </label><input type="password" name="password" /></div>
+      <input type="button" id="login_btn" value="Login" />
+    </form>
+    <a href="javascript:;" id="create-account-link">Create Account</a>
+  </div>
+
+  <div id="loading"><div class="dt_progressbar" style="display: block"></div></div>
+
+</div>
+
 

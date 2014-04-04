@@ -3,8 +3,8 @@
 /**
  * Plugin Name: Dreamstime Stock Photos
  * Plugin URI: http://www.dreamstime.com/wordpress-photo-image-plugin
- * Description: Search and insert images into your posts and pages from Dreamstime stock images database.
- * Version: 1.0
+ * Description: Search and insert images into your posts and pages from Dreamstime's vast database of Free and Royalty-Free stock photos & illustrations.
+ * Version: 1.1
  * Author: Dreamstime
  * Author URI: http://www.dreamstime.com
  * License: GPL2
@@ -32,7 +32,7 @@ define('DREAMSTIME_STATIC_URL', plugin_dir_url(__FILE__).'static/' );
 
 class Dreamstime
 {
-  public $data = array('images', 'user', 'postId', 'image', 'auth', 'keywords', 'lightboxId', 'settings');
+  public $data = array('images', 'user', 'postId', 'image', 'auth', 'keywords', 'lightboxId', 'settings', 'post', 'isSearchFormUsed', 'activeImagesTab');
   public $api;
   public $error;
 
@@ -40,14 +40,18 @@ class Dreamstime
   {
     global $wp_version;
 
+//    register_activation_hook(__FILE__,array(&$this, 'activate'));
+
     $this->_startSession();
     add_action('wp_logout', array($this, 'logout'));
+
 
     if ($wp_version < 3.5) {
       if ( basename($_SERVER['PHP_SELF']) != "media-upload.php" ) return;
     } else {
       if ( basename($_SERVER['PHP_SELF']) != "media-upload.php" && basename($_SERVER['PHP_SELF']) != "post.php" && basename($_SERVER['PHP_SELF']) != "post-new.php" && basename($_SERVER['PHP_SELF']) != "admin-ajax.php") return;
     }
+
 
     add_filter("media_upload_tabs",array($this,"buildTab"));
     add_action("media_upload_dreamstime", array($this, "menuHandle"));
@@ -63,13 +67,51 @@ class Dreamstime
     add_action("wp_ajax_checkUsername", array($this, "checkUsername"));
     add_action("wp_ajax_refreshAccountInfo", array($this, "refreshAccountInfo"));
     add_action("wp_ajax_toggleReferral", array($this, "toggleReferral"));
+    add_action("wp_ajax_ajxSearch", array($this, "ajxSearch"));
+    add_action("wp_ajax_ajxSaveActiveImagesTab", array($this, "ajxSaveActiveImagesTab"));
+    add_action("admin_head", array($this, "setCurrentPost"));
 
+//unset($_SESSION['dreamstime']);
     require_once 'api.php';
     $this->api = new DreamstimeApi();
 
     if($postId = $_REQUEST['post_id']) {
       $this->postId = $postId;
     }
+  }
+
+  function setCurrentPost() {
+    //get current post
+    global $post;
+
+    if($post instanceof WP_Post) {
+      $lastPost = $this->post;
+      if(!$lastPost instanceof WP_Post) {
+        $this->post = $post;
+        $this->keywords = null;
+        $this->images = null;
+        $this->isSearchFormUsed = null;
+      } elseif($lastPost->ID != $post->ID) {
+        $this->post = $post;
+        $this->keywords = null;
+        $this->images = null;
+        $this->isSearchFormUsed = null;
+      }
+    }
+    return;
+//    $script = basename($_SERVER['PHP_SELF']);
+//    if(!$this->keywords && $script == 'media-upload.php' && $_REQUEST['tab'] == 'dreamstime' && $this->post instanceof WP_Post) {
+//      $postTitle = trim(strip_tags($this->post->post_title));
+//      if($postTitle) {
+//        $this->_search($postTitle);
+//        return;
+//      }
+//      $postContent = trim(strip_tags($this->post->post_content));
+//      if($postContent) {
+//        return;
+//      }
+//
+//    }
   }
 
 
@@ -114,7 +156,6 @@ class Dreamstime
 
   public function mediaController()
   {
-
     media_upload_header();
 
     if($action = $_REQUEST['action']) {
@@ -142,22 +183,54 @@ class Dreamstime
   public function search()
   {
     $keywords = sanitize_text_field($_REQUEST['keywords']);
-
     try {
       if(!strlen($keywords)) {
         throw new Exception("Search string can\'t be empty!");
       }
-
-      $images = $this->images;
-      $images['free'] = $this->api->search($keywords, 1, 'SearchFreeImages');
-      $images['paid'] = $this->api->search($keywords, 1, 'SearchPaidImages');
-      $this->images = $images;
-      $this->keywords = $keywords;
+      $this->isSearchFormUsed = 1;
+      $this->_search($keywords);
     } catch (Exception $e) {
       $this->error = $e->getMessage();
     }
 
   }
+
+  public function ajxSearch()
+  {
+    $keywords = sanitize_text_field($_REQUEST['keywords']);
+
+    try {
+      if($keywords) {
+        $this->_search($keywords);
+        $images = $this->images;
+      } else {
+        $images = $this->images;
+        unset($images['paid'], $images['free']);
+        $this->keywords = '';
+      }
+      //remove images if no result
+      if(!$images['paid']['count'] && !$images['free']['count']) {
+        unset($images['paid'], $images['free']);
+      }
+      $this->images = $images;
+      $this->__set('images', $images);
+      ob_start();
+      include 'search.php';
+      $search = ob_get_contents();
+      ob_end_clean();
+      echo $search;
+    } catch (Exception $e) {
+      header('HTTP/1.0 500 '. $e->getMessage());
+    }
+    exit;
+  }
+  public function ajxSaveActiveImagesTab()
+  {
+    $this->activeImagesTab = sanitize_text_field($_REQUEST['tab']);
+    exit;
+  }
+
+
 
   /**
    * Get more images using ajax calls
@@ -402,6 +475,22 @@ class Dreamstime
     exit;
   }
 
+  protected function _search($keywords = null) {
+    $images = $this->images;
+//    if($keywords) {
+      $images['free'] = $this->api->search($keywords, 1, 'SearchFreeImages');
+      $images['paid'] = $this->api->search($keywords, 1, 'SearchPaidImages');
+//      if(!$images['free']['count'] && !$images['paid']['count']) {
+//        $images['featured'] = $this->api->getEditorsChoiceImages();
+//      }
+//    } else {
+//      unset($images['free'], $images['paid']);
+//      $images['featured'] = $this->api->getEditorsChoiceImages();
+//    }
+
+    $this->images = $images;
+    $this->keywords = $keywords;
+  }
   protected function _login($username, $password)
   {
     $username = sanitize_text_field($username);
@@ -470,11 +559,12 @@ class Dreamstime
     $user = $this->user;
     $source_url = $user->DownloadedUrls[$hash];
 
+    add_filter('http_request_timeout', array($this,'setHttpRequestTimeout'));
     $response = wp_remote_get( $source_url );
     if($response instanceof WP_Error) {
-      $error = implode('<br>', reset($response->errors));
-//      throw new Exception('Image download error! Please try again');
-      throw new Exception($error);
+//      $error = implode('<br>', reset($response->errors));
+      throw new Exception('The request could not be completed at this time, please try again later.');
+//      throw new Exception($error);
     }
     if(strpos($response['headers']['content-type'], 'application/download') === false) {
       //url probably expired
@@ -497,13 +587,16 @@ class Dreamstime
 
     return $uploaded;
   }
+  public function setHttpRequestTimeout(){
+    return 10;
+  }
   protected function _attachToPost($uploaded)
   {
     $filename = $uploaded['file'];
     $wp_filetype = wp_check_filetype($filename, null );
 
-    $caption = '© <a href="'.$this->image->Image->AuthorUrl.'" target="dreamstime.com">' . $this->image->Image->Author.'</a> | ';
-    $caption .= '<a href="'.$this->settings['image_credits_link'].'" title="'.$this->settings['image_credits_description'].'" target="dreamstime.com">'.$this->settings['image_credits_text'].'</a>';
+    $caption = '© <a href="'.$this->image->Image->AuthorUrl.'" target="dreamstime.com" class="dt-caption">' . $this->image->Image->Author.'</a> | ';
+    $caption .= '<a href="'.$this->settings['image_credits_link'].'" title="'.$this->settings['image_credits_description'].'" target="dreamstime.com" class="dt-caption">'.$this->settings['image_credits_text'].'</a>';
 
 
     $attachment = array(

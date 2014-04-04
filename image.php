@@ -63,6 +63,7 @@ if($licenses = $image->Licenses) {
           </tr>
         <?php endforeach;?>
         </table>
+        <a href="javascript:;" onclick="moreSizes()" class="dt_more_sizes" style="display: none">More Sizes</a>
       </div>
     </div>
   <?php endif;?>
@@ -87,6 +88,18 @@ if($licenses = $image->Licenses) {
       <?php endif; ?>
     });
 
+    $('div.prices table tr').each(function(index, value){
+      if(index > 2 && $(this).find('input[type="radio"]:checked').length == 0) {
+        $(this).hide();
+        $('.dt_more_sizes').show();
+      }
+    });
+
+    moreSizes = function()
+    {
+      $('div.prices table tr').fadeIn(1000);
+      $('.dt_more_sizes').hide();
+    }
 
 
   });

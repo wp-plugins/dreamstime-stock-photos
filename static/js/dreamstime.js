@@ -1,6 +1,4 @@
 
-
-
 (function( $ ){
 
   dt_tab = function(index)
@@ -128,6 +126,99 @@
   }
 
 
+  dt_search = function(keywords)
+  {
+    dt_loading('open');
+    $.ajax({
+      type: 'POST',
+      url: ajaxurl,
+      data: {action: 'ajxSearch', keywords: keywords}
+    }).done(function(data){
+      dt_loading('close');
+      $('#dt_search_tab').html(data);
+    });
+  }
+
+  initialSearch = function(lastKeywords) {
+    //search by post title
+    var postTitle = window.parent.document.getElementById('title');
+    var keywords = '';
+    postTitle = $.trim($(postTitle).val());
+    if(postTitle.length) {
+      postTitle = $('<div/>').html(postTitle).text(); //strip html tags
+      keywords = postTitle;
+    } else {
+      //search post by content
+      var postContent = _getContentFromActiveEditor();
+      keywords = _getMostFrequentlyWords(postContent);
+    }
+    if(keywords != lastKeywords || typeof lastKeywords === 'undefined') {
+      $('#keywords').val(keywords);
+      dt_search(keywords);
+    }
+  }
+
+  _getContentFromActiveEditor = function() {
+    var editorWrap = window.parent.document.getElementById('wp-content-wrap');
+    var isTextEditor = $(editorWrap).hasClass('html-active');
+    var content = '';
+    if(isTextEditor) {
+      content = $(editorWrap).find('#content').val();
+    } else {
+      content = $(editorWrap).find('#content_ifr').contents().find('body#tinymce').html();
+    }
+    return _stripPostContent(content);
+  }
+
+  _stripPostContent = function(postContent) {
+    //strip dreamstime images credits
+    postContent = postContent.replace(/<dd[\s\S]+class="wp-caption-dd"[\s\S]+<\/dd>/igm, '');
+
+    //strip [shortcode ...] lorem ipsum [/shortcode] and [shortcode ...]
+    postContent = postContent.replace(/\[[^\[]+\[\/[a-z]+\]|\[[^\]]+\]/igm, '');
+
+    //strip html tags
+    postContent = $('<div/>').html(postContent).text();
+
+    //replace new lines with spaces
+    postContent = postContent.replace(/\n/gi,' ');
+
+    return postContent;
+  }
+
+  _getMostFrequentlyWords = function(postContent) {
+    var contentArr = postContent.split(' ');
+    var keywords = [];
+    var values = [];
+    $.each(contentArr, function(index, value){
+      value = value.replace(/[^a-zA-Z]+/g, '');
+      if(value.length >= 4) {
+        var re = new RegExp(value, 'g');
+        var matched = postContent.match(re);
+        if(values.indexOf(value) == -1) {
+          values.push(value);
+          var count = matched.length;
+          keywords.push({count: count, value: value});
+        }
+      }
+    });
+    //order by count desc
+    keywords.sort(function(a, b){
+      return b.count - a.count;
+    });
+
+    var keywordsArr = [];
+    if(keywords.length >= 3) {
+      $.each(keywords, function(index, obj){
+        if(index < 5){
+          keywordsArr.push(obj.value);
+        }
+      });
+    }
+
+    return keywordsArr.join(' ');
+  }
+
   dt_more = function(container_id, params)
   {
 
@@ -147,9 +238,6 @@
       }
     });
   }
-
-
-
 
   $.fn.dtMore = function(options)
   {
@@ -196,11 +284,22 @@
 
 
   $(document).ready(function(){
+
+    /**
+     * Daryl Koopersmith:
+     * wp.media.editor is used to manage instances of editor-specific media managers.
+     * If you're looking to trigger an event when opening the default media modal,
+     * you'll want to grab a reference to the media manager by calling wp.media.editor.add('content').
+     * We're calling "add" here instead of "get" to make sure the modal exists, because "get" may
+     * return undefined (and don't worry, "add" only creates the instance once).
+     * You can then call the .on method on that object and your code will run just fine.
+     */
+
     $('a.insert-media').click(function(){
       var mediaModal = wp.media.editor.get(wpActiveEditor);
-      if(mediaModal && mediaModal != undefined) {
+      if(mediaModal && typeof mediaModal != 'undefined') {
         if(mediaModal.state().id == 'iframe:dreamstime'){
-          if($('.media-iframe > iframe').contents().find('#dt_tabs').length == 0) {
+          if($('.media-iframe > iframe').contents().find('#dt_tabs').length == 0 || true) {//forcing ...
             mediaModal.setState('insert');
             mediaModal.setState('iframe:dreamstime');
           }
@@ -211,7 +310,7 @@
     $('#dreamstime-media-button').click(function(){
       var mediaModal = wp.media.editor.open(wpActiveEditor);
       if(mediaModal.state().id == 'iframe:dreamstime'){
-        if($('.media-iframe > iframe').contents().find('#dt_tabs').length == 0) {
+        if($('.media-iframe > iframe').contents().find('#dt_tabs').length == 0 || true) { //forcing ...
           mediaModal.setState('insert');
           mediaModal.setState('iframe:dreamstime');
         }
