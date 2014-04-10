@@ -14,5 +14,5 @@
   }
 ?>
 
-  available in your account. <a href="http://www.dreamstime.com/credits" target="_blank">Buy Credits</a>
+  available in your account. <a href="http://www.dreamstime.com/credits" target="_blank"><?php if ($credits > 0) { ?>Buy More Credits<?php } else { ?>Buy Credits<?php } ?></a>
 </p>

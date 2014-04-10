@@ -312,10 +312,13 @@ class Dreamstime
     $image = explode('-', $image);
     $imageId = $image[1];
     $imageType = $image[0];
-    if($size_license) {
+    if ($size_license) {
       $size_license = explode('-', $size_license);
-      $size = $size_license[0];
-      $license = $size_license[1];
+      $size = (string)$size_license[0];
+      $license = (string)$size_license[1];
+    } else {
+      $size = '';
+      $license = '';
     }
 
     try {
@@ -588,7 +591,7 @@ class Dreamstime
     return $uploaded;
   }
   public function setHttpRequestTimeout(){
-    return 10;
+    return 30;
   }
   protected function _attachToPost($uploaded)
   {

@@ -3,8 +3,7 @@
 class DreamstimeApi {
 
   public $apiUrl = 'http://www.dreamstime.com/api/';
-//  public $apiUrl = 'http://api2.dreamstime.com';
-  public $ApplicationId = 'WP-Plugin v0.2';
+  public $ApplicationId = 'WP-Plugin v1.1';
   public $pageSize = 20;
 
 
@@ -102,6 +101,7 @@ class DreamstimeApi {
       'Verb' => $verb,
       'AuthToken' => $this->_getToken(),
       'ImageId' => $imageId,
+      'PageUrl' => $_SERVER['HTTP_REFERER'],
     );
     if($size && $license) {
       $data['APIRequests'][$verb]['Size'] = $size;
@@ -182,7 +182,7 @@ class DreamstimeApi {
         'Content-Length: ' . strlen($dataString)
       )
     );
-    curl_setopt($ch,CURLOPT_USERAGENT, $this->ApplicationId);
+    curl_setopt($ch, CURLOPT_USERAGENT, $this->ApplicationId);
 
 
     $response = json_decode(curl_exec($ch));
