@@ -3,7 +3,7 @@
 class DreamstimeApi {
 
   public $apiUrl = 'http://www.dreamstime.com/api/';
-  public $ApplicationId = 'WP-Plugin v1.1';
+  public $ApplicationId = 'WP-Plugin v1.2';
   public $pageSize = 20;
 
 

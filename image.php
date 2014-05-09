@@ -59,7 +59,7 @@ if($licenses = $image->Licenses) {
             <td><?php echo $size->FullName?></td>
             <td><?php echo ($size->Width && $size->Height) ? $size->Width .'x'. $size->Height : '--'?></td>
             <td><?php  echo $priceStr?></td>
-            <td><input type="radio" id="size" name="size" <?php if($size->Default) echo 'checked="checked"'?> value="<?php echo $size->Size.'-'.$license->License ?>"></td>
+            <td><input type="radio" name="size" <?php if($size->Default) echo 'checked="checked"'?> value="<?php echo $size->Size.'-'.$license->License ?>"></td>
           </tr>
         <?php endforeach;?>
         </table>
@@ -82,7 +82,7 @@ if($licenses = $image->Licenses) {
 
     $('.dt_download').click(function(){
       <?php if($this->user):?>
-      dt_downloadImage($(this).attr('id'), $('#size').val());
+      dt_downloadImage($(this).attr('id'), $('input[name="size"]:checked').val());
       <?php else: ?>
       dt_login();
       <?php endif; ?>
