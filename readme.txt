@@ -4,7 +4,7 @@ Contributors: dreamstime
 Tags: dreamstime, photo, image, stock, stock images, dreamstime stock images, free photos, free images, stock photos, pictures, free pictures, illustrations, free illustrations, clipart, clip art, free clipart, free clip art, royalty free, stock photography, free stock photography, photography, free photography
 Requires at least: 3.5
 Tested up to: 3.9
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,9 @@ Dreamstime contributors can add their own images to their blog articles without 
 7. *Logged in* view
 
 == Changelog ==
+
+= 1.3 =
+* Added review box
 
 = 1.2 =
 * Fixed downloading large resolution images

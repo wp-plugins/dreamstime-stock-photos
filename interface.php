@@ -59,6 +59,25 @@
 </script>
 
 
+<?php if($displayReviewNote):?>
+<div class="updated review-note">
+  <p>
+    <div>
+      Roses are red, violets are blue...</br>
+      But what's a plugin without a review?</br></br>
+
+      Please take a moment to rate our plugin and spread the word.</br></br>
+
+      We really appreciate it!</br>
+    </div>
+    <form action="http://wordpress.org/support/view/plugin-reviews/dreamstime-stock-photos#topic" target="_blank" onsubmit="dt_review('add')">
+      <input type="submit" value="Do it now !" id="review-add" />
+    </form>
+    <input type="button" value="Remind me later" onclick="dt_review('later')" />
+    <input type="button" value="Don't ask again" onclick="dt_review('no')" />
+  </p>
+</div>
+<?php endif;?>
 
 <?php if(!$isUploadsDirAvailable):?>
   <div id="message" class="error">

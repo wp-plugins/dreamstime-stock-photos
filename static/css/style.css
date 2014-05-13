@@ -41,6 +41,7 @@
 	#dt_tabs input[type=text],
 	#dt_tabs input[type=password],
 	#dt_tabs input[type=submit],
+	.review-note input,
 	#dt_tabs .dt_image_th,
 	.ui-dialog button .ui-button-text,
 	.ui-dialog a,
@@ -53,6 +54,7 @@
 	#dt_tabs input[type=text],
 	#dt_tabs input[type=password],
 	#dt_tabs input[type=submit],
+	.review-note input,
 	#dt_tabs select,
 	#dt_tabs textarea,
 	.ui-dialog button .ui-button-text,
@@ -76,6 +78,7 @@
 	#dt_tabs select {padding:1px !important;}
 	#dt_tabs input[type=submit] {outline:0 none;}
 	#dt_tabs input[type=submit],
+	.review-note input,
 	.ui-dialog input[type=button] {border:0; cursor:pointer; background:#2EA2CC; color:#FFF; font-size:11px; font-weight:bold; padding:3px 10px 4px 10px;}
 		#dt_tabs input[type=submit]:hover,
 		.ui-dialog input[type=button]:hover {background:#5AB7DA; color:#FFF;}
@@ -168,3 +171,6 @@
 .referral label {float: none !important; position: absolute; margin-top: -10px;}
 .referral span {float: none; padding: 0 !important; font-size: smaller; font-style: italic; display: block; position: absolute; margin: 10px 0 0 22px;}
 .dt_more_sizes {color:#2EA2CC !important; float: left; margin: 5px;}
+.review-note #review-add {font-size: 14px; background-color: #9C0;}
+.review-note form {margin: 0 20px 0 0; display: inline}
+.review-note div {margin-bottom: 15px;}

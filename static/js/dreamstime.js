@@ -139,6 +139,19 @@
     });
   }
 
+  dt_review = function(action)
+  {
+    dt_loading('open');
+    $.ajax({
+      type: 'POST',
+      url: ajaxurl,
+      data: {action: 'ajxReview', data: action}
+    }).done(function(data){
+      dt_loading('close');
+      $('.review-note').remove();
+    });
+  }
+
   initialSearch = function(lastKeywords) {
     //search by post title
     var postTitle = window.parent.document.getElementById('title');

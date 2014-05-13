@@ -4,7 +4,7 @@
  * Plugin Name: Dreamstime Stock Photos
  * Plugin URI: http://www.dreamstime.com/wordpress-photo-image-plugin
  * Description: Search and insert images into your posts and pages from Dreamstime's vast database of Free and Royalty-Free stock photos & illustrations.
- * Version: 1.2
+ * Version: 1.3
  * Author: Dreamstime
  * Author URI: http://www.dreamstime.com
  * License: GPL2
@@ -69,6 +69,7 @@ class Dreamstime
     add_action("wp_ajax_toggleReferral", array($this, "toggleReferral"));
     add_action("wp_ajax_ajxSearch", array($this, "ajxSearch"));
     add_action("wp_ajax_ajxSaveActiveImagesTab", array($this, "ajxSaveActiveImagesTab"));
+    add_action("wp_ajax_ajxReview", array($this, "ajxReview"));
     add_action("admin_head", array($this, "setCurrentPost"));
 
 //unset($_SESSION['dreamstime']);
@@ -171,6 +172,7 @@ class Dreamstime
     $this->getLightbox();
 
     $isUploadsDirAvailable = $this->isUploadsDirAvailable();
+    $displayReviewNote = $this->displayReviewNote();
     include 'interface.php';
 
   }
@@ -178,6 +180,18 @@ class Dreamstime
   public function isUploadsDirAvailable() {
     $uploadDir = wp_upload_dir();
     return $uploadDir['error'] === false;
+  }
+
+  public function displayReviewNote() {
+    if(!get_option('dreamstime_is_images_downloaded')) return false;
+
+    if($option = get_option('dreamstime_review')) {
+      if($option == 'later' && get_option('dreamstime_review_later') <= date('Y-m-d')) {
+        return true;
+      }
+      return false;
+    }
+    return true;
   }
 
   public function search()
@@ -331,6 +345,7 @@ class Dreamstime
       }
       $uploaded = $this->_uploadImage($hash);
       $attach_id = $this->_attachToPost($uploaded);
+      update_option('dreamstime_is_images_downloaded', 1);
       echo $this->_media_upload_type_form('image', null, $attach_id);
     } catch (Exception $e) {
       header('HTTP/1.0 500 '. $e->getMessage());
@@ -477,6 +492,17 @@ class Dreamstime
     }
     exit;
   }
+
+  public function ajxReview()
+  {
+    $action = sanitize_text_field($_REQUEST['data']);
+    update_option('dreamstime_review', $action);
+    if($action == 'later') {
+      update_option('dreamstime_review_later', date('Y-m-d', strtotime('+3 days')));
+    }
+    exit;
+  }
+
 
   protected function _search($keywords = null) {
     $images = $this->images;
