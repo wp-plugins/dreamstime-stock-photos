@@ -79,6 +79,7 @@ class DreamstimeApi {
       'Verb' => $verb,
       'AuthToken' => $this->_getToken(),
       'ImageId' => $imageId,
+      'PageUrl' => $_SERVER['HTTP_REFERER'],
     );
     if($this->_getAuth('username')) {
       $data['APIRequests']['GetAccountInfo'] = array(
