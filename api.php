@@ -3,8 +3,10 @@
 class DreamstimeApi {
 
   public $apiUrl = 'http://www.dreamstime.com/api/';
-  public $ApplicationId = 'WP-Plugin v1.3';
+  public $ApplicationId = 'WP-Plugin v2.0';
   public $pageSize = 20;
+  public $APIRequests = array();
+  public $APIResponses = array();
 
 
   public function __construct () {
@@ -41,21 +43,39 @@ class DreamstimeApi {
 
   }
 
-  public function search($keywords, $page=1, $searchType = 'SearchFreeImages')
+  public function search($keywords, $searchType, $page=1)
   {
-    $data['APIRequests'][$searchType] = array(
+    $this->APIRequests[$searchType] = array(
       'Verb' => $searchType,
       'AuthToken' => $this->_getToken(),
       'Keywords' => $keywords,
       'PageSize' => $this->pageSize,
       'Page' => $page,
     );
-    $response = $this->_post($data);
+  }
+
+  public function getSearchResults($searchType) {
+//    $response = $this->APIResponses[$searchType];
     return array(
-      'images' => (array)$response->APIResponses->$searchType->Images,
-      'count' => $response->APIResponses->$searchType->ImagesCount,
+      'images' => (array)$this->APIResponses[$searchType]->Images,
+      'count' => $this->APIResponses[$searchType]->ImagesCount,
     );
   }
+//  public function search($keywords, $page=1, $searchType = 'SearchFreeImages')
+//  {
+//    $data['APIRequests'][$searchType] = array(
+//      'Verb' => $searchType,
+//      'AuthToken' => $this->_getToken(),
+//      'Keywords' => $keywords,
+//      'PageSize' => $this->pageSize,
+//      'Page' => $page,
+//    );
+//    $response = $this->_post($data);
+//    return array(
+//      'images' => (array)$response->APIResponses->$searchType->Images,
+//      'count' => $response->APIResponses->$searchType->ImagesCount,
+//    );
+//  }
 
   public function getEditorsChoiceImages($page=1)
   {
@@ -169,6 +189,43 @@ class DreamstimeApi {
     );
   }
 
+  public function getDownloadedImages($page = 1){
+    $data['APIRequests']['GetDownloadedImages'] = array(
+      'Verb' => 'GetDownloadedImages',
+      'AuthToken' => $this->_getToken(),
+      'PageSize' => $this->pageSize,
+      'Page' => $page,
+    );
+    $response = $this->_post($data);
+    return array(
+      'images' => (array)$response->APIResponses->GetDownloadedImages->Images,
+      'count' => $response->APIResponses->GetDownloadedImages->ImagesCount,
+    );
+  }
+
+  public function getUploadedImages($page = 1){
+    $data['APIRequests']['GetOnlineFiles'] = array(
+      'Verb' => 'GetOnlineFiles',
+      'AuthToken' => $this->_getToken(),
+      'PageSize' => $this->pageSize,
+      'Page' => $page,
+    );
+    $response = $this->_post($data);
+    return array(
+      'images' => (array)$response->APIResponses->GetOnlineFiles->OnlineFiles,
+      'count' => $response->APIResponses->GetOnlineFiles->OnlineFilesCount,
+    );
+  }
+
+  public function apiCall()
+  {
+    if(empty($this->APIRequests)) throw new Exception ('API: No request data !');
+
+    $data = array('APIRequests' => $this->APIRequests);
+    $response = $this->_post($data);
+    $this->APIResponses = (array)$response->APIResponses;
+    $this->APIRequests = array();
+  }
   protected function _post($data)
   {
     $dataString = json_encode($data);
@@ -241,7 +298,6 @@ class DreamstimeApi {
   }
   protected function _getToken()
   {
-//    return;
     if($token = $this->_getAuth('token')) {
       return $token;
     }

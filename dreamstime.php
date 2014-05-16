@@ -4,7 +4,7 @@
  * Plugin Name: Dreamstime Stock Photos
  * Plugin URI: http://www.dreamstime.com/wordpress-photo-image-plugin
  * Description: Search and insert images into your posts and pages from Dreamstime's vast database of Free and Royalty-Free stock photos & illustrations.
- * Version: 1.3
+ * Version: 2.0
  * Author: Dreamstime
  * Author URI: http://www.dreamstime.com
  * License: GPL2
@@ -90,13 +90,13 @@ class Dreamstime
       if(!$lastPost instanceof WP_Post) {
         $this->post = $post;
         $this->keywords = null;
-        $this->images = null;
         $this->isSearchFormUsed = null;
+        $this->emptySearchCache();
       } elseif($lastPost->ID != $post->ID) {
         $this->post = $post;
         $this->keywords = null;
-        $this->images = null;
         $this->isSearchFormUsed = null;
+        $this->emptySearchCache();
       }
     }
     return;
@@ -163,13 +163,10 @@ class Dreamstime
       $this->$action();
     }
 
-    $images = $this->images;
-    if(empty($images['featured'])) {
-      $images['featured'] = $this->api->getEditorsChoiceImages();
-      $this->images = $images;
-    }
-
+    $this->getEditorsChoiceImages();
     $this->getLightbox();
+    $this->getMyDownloads();
+    $this->getMyImages();
 
     $isUploadsDirAvailable = $this->isUploadsDirAvailable();
     $displayReviewNote = $this->displayReviewNote();
@@ -229,6 +226,7 @@ class Dreamstime
       $this->images = $images;
       $this->__set('images', $images);
       ob_start();
+      $action = 'search';
       include 'search.php';
       $search = ob_get_contents();
       ob_end_clean();
@@ -238,12 +236,12 @@ class Dreamstime
     }
     exit;
   }
+
   public function ajxSaveActiveImagesTab()
   {
     $this->activeImagesTab = sanitize_text_field($_REQUEST['tab']);
     exit;
   }
-
 
 
   /**
@@ -262,18 +260,30 @@ class Dreamstime
         case 'free':
         case 'paid':
         case 'featured':
+        case 'downloaded':
+        case 'uploaded':
           $images = $this->images;
           $cachedImages = $images[$type]['images'];
           $page = floor(count($cachedImages) / $api->pageSize) + 1;
           switch ($type) {
             case 'free':
-              $newImages = $api->search($keywords, $page, 'SearchFreeImages');
+              $api->search($keywords, 'SearchFreeImages', $page);
+              $api->apiCall();
+              $newImages = $api->getSearchResults('SearchFreeImages');
               break;
             case'paid':
-              $newImages = $api->search($keywords, $page, 'SearchPaidImages');
+              $api->search($keywords, 'SearchPaidImages', $page);
+              $api->apiCall();
+              $newImages = $api->getSearchResults('SearchPaidImages');
               break;
             case 'featured':
               $newImages = $api->getEditorsChoiceImages($page);
+              break;
+            case 'downloaded':
+              $newImages = $api->getDownloadedImages($page);
+              break;
+            case 'uploaded':
+              $newImages = $api->getUploadedImages($page);
               break;
           }
 
@@ -369,6 +379,8 @@ class Dreamstime
       $tabs = array();
       ob_start();
       $this->getLightbox();
+      $this->getMyDownloads();
+      $this->getMyImages();
       include 'search.php';
       $tabs['search'] = ob_get_contents();
       ob_end_clean();
@@ -432,6 +444,18 @@ class Dreamstime
     }
   }
 
+  public function getEditorsChoiceImages(){
+    try {
+      $images = $this->images;
+      if(empty($images['featured'])) {
+        $images['featured'] = $this->api->getEditorsChoiceImages();
+        $this->images = $images;
+      }
+    } catch (Exception $e) {
+      $this->error = $e->getMessage();
+    }
+  }
+
   public function getLightbox()
   {
     if(!$this->user->Lightboxes) {
@@ -454,6 +478,40 @@ class Dreamstime
         }
       }
       $this->user = $user;
+    } catch (Exception $e) {
+      $this->error = $e->getMessage();
+    }
+  }
+
+  public function getMyDownloads(){
+    if(!isset($this->user)) return;
+
+    try {
+      $images = $this->images;
+      if($this->user->Downloads > 0 && empty($images['downloaded'])) {
+        $downloaded = $this->api->getDownloadedImages();
+        if($downloaded['count'] > 0) {
+          $images['downloaded'] = $downloaded;
+          $this->images = $images;
+        }
+      }
+    } catch (Exception $e) {
+      $this->error = $e->getMessage();
+    }
+  }
+
+  public function getMyImages(){
+    if(!isset($this->user)) return;
+
+    try {
+      $images = $this->images;
+      if($this->user->Uploads > 0 && empty($images['uploaded'])) {
+        $uploaded = $this->api->getUploadedImages();
+        if($uploaded['count'] > 0) {
+          $images['uploaded'] = $uploaded;
+          $this->images = $images;
+        }
+      }
     } catch (Exception $e) {
       $this->error = $e->getMessage();
     }
@@ -503,19 +561,19 @@ class Dreamstime
     exit;
   }
 
+  public function emptySearchCache() {
+    $images = $this->images;
+    unset($images['free'], $images['paid']);
+    $this->images = $images;
+  }
 
   protected function _search($keywords = null) {
     $images = $this->images;
-//    if($keywords) {
-      $images['free'] = $this->api->search($keywords, 1, 'SearchFreeImages');
-      $images['paid'] = $this->api->search($keywords, 1, 'SearchPaidImages');
-//      if(!$images['free']['count'] && !$images['paid']['count']) {
-//        $images['featured'] = $this->api->getEditorsChoiceImages();
-//      }
-//    } else {
-//      unset($images['free'], $images['paid']);
-//      $images['featured'] = $this->api->getEditorsChoiceImages();
-//    }
+    $this->api->search($keywords, 'SearchFreeImages');
+    $this->api->search($keywords, 'SearchPaidImages');
+    $this->api->apiCall();
+    $images['free'] = $this->api->getSearchResults('SearchFreeImages');
+    $images['paid'] = $this->api->getSearchResults('SearchPaidImages');
 
     $this->images = $images;
     $this->keywords = $keywords;

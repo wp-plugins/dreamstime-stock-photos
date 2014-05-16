@@ -126,3 +126,12 @@
 </div>
 
 
+<script type="text/javascript">
+  jQuery(function($){
+
+    <?php if(!$this->isSearchFormUsed ): ?>
+      initialSearch('<?php echo $this->keywords?>');
+    <?php endif;?>
+
+  });
+</script>
