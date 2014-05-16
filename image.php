@@ -49,7 +49,7 @@ if($licenses = $image->Licenses) {
             $priceUnit = key ($prices[$size->Size]);
             $price = $prices[$size->Size][$priceUnit];
             if($priceUnit == 'Credit') {
-              $priceStr = $price == 1 ? $price.' credit' : $price.' credits';
+              $priceStr = $price == 0 ? '<span class="free-price">Free</span>' : ($price == 1 ? $price.' credit' : $price.' credits');
             }
             if($priceUnit == 'Subscription') {
               $priceStr = $price == 1 ? $price.' subscription download' : $price.' subscriptions downloads';

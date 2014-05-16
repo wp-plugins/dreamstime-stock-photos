@@ -3,8 +3,8 @@
 Contributors: dreamstime
 Tags: dreamstime, photo, image, stock, stock images, dreamstime stock images, free photos, free images, stock photos, pictures, free pictures, illustrations, free illustrations, clipart, clip art, free clipart, free clip art, royalty free, stock photography, free stock photography, photography, free photography
 Requires at least: 3.5
-Tested up to: 3.9
-Stable tag: 1.3
+Tested up to: 3.9.1
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,9 +16,9 @@ Easily & safely insert stock images into your posts and pages from the largest s
 
 For current Dreamstime users, the plugin is linked to your account, so if you’ve already purchased an image prior to installing the WordPress plugin, you won’t have to purchase the same image again.
 
-You can also make money with automatic Dreamstime referral program integration. Using referral links you will receive 10% of all sales and uploads made within the first 3 years for each user you refer. 
-
 Dreamstime contributors can add their own images to their blog articles without having to pay for them.
+
+You can also make money with automatic Dreamstime referral program integration. Using referral links you will receive 10% of all sales and uploads made within the first 3 years for each user you refer. 
 
 **Features:**
 
@@ -44,6 +44,10 @@ Dreamstime contributors can add their own images to their blog articles without 
 7. *Logged in* view
 
 == Changelog ==
+
+= 2.0 =
+* Free download for previously downloaded images
+* Free download for own images
 
 = 1.3 =
 * Added review box

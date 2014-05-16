@@ -7,18 +7,14 @@
 </form>
 
 
-<?php
-if(!$this->images) {
-//  return;
-}
-?>
-
 <div id="dt_search_results">
     <ul>
       <?php if($this->images['featured']):?><li><a href="#featured">Editors' Choice Images</a></li><?php endif;?>
-      <?php if($this->lightboxId):?><li><a href="#lightboxes">My lightboxes</a></li><?php endif;?>
+      <?php if($this->lightboxId):?><li><a href="#lightboxes">My Lightboxes</a></li><?php endif;?>
       <?php if($this->images['paid']):?><li><a href="#paid">Commercial Stock Images</a></li><?php endif;?>
       <?php if($this->images['free']):?><li><a href="#free">Free Stock Images</a></li><?php endif;?>
+      <?php if($this->images['downloaded']):?><li><a href="#downloaded">My Downloads</a></li><?php endif;?>
+      <?php if($this->images['uploaded']):?><li><a href="#uploaded">My Images</a></li><?php endif;?>
 
     </ul>
 
@@ -29,6 +25,8 @@ if(!$this->images) {
   <?php if($this->lightboxId) include 'lightboxes.php'?>
   <?php if($this->images['paid']) echo $this->renderImagesPanel($this->images['paid']['images'], $this->images['paid']['count'], 'paid')?>
   <?php if($this->images['free']) echo $this->renderImagesPanel($this->images['free']['images'], $this->images['free']['count'], 'free')?>
+  <?php if($this->images['downloaded']) echo $this->renderImagesPanel($this->images['downloaded']['images'], $this->images['downloaded']['count'], 'downloaded')?>
+  <?php if($this->images['uploaded']) echo $this->renderImagesPanel($this->images['uploaded']['images'], $this->images['uploaded']['count'], 'uploaded')?>
 
   <div class="dt_clear"></div>
 </div>
@@ -36,9 +34,7 @@ if(!$this->images) {
 
 <script type="text/javascript">
   jQuery(function($){
-<!--    var index = --><?php //echo intval($_POST['lightbox_id']) ? 1 : ($this->keywords && $this->lightboxId ? 2 : ($this->keywords ? 1 : 0))?><!--;-->
     $( "#dt_search_results" ).tabs({
-//      active: index,
       activate: function(event, ui){
         var activeTab = ui.newPanel.attr('id');
         $.ajax({
@@ -54,20 +50,19 @@ if(!$this->images) {
     dt_more('featured', {action: 'more', type: 'featured'});
     dt_more('free', {action: 'more', keywords: $('#keywords').val(), type: 'free'});
     dt_more('paid', {action: 'more', keywords: $('#keywords').val(), type: 'paid'});
+    dt_more('downloaded', {action: 'more', type: 'downloaded'});
+    dt_more('uploaded', {action: 'more', type: 'uploaded'});
 
     <?php if(!$this->images['paid']['count'] && !$this->images['free']['count'] && !$this->isSearchFormUsed):?>
       $('#keywords').val('');
     <?php endif;?>
 
 
-    <?php if(!$this->isSearchFormUsed ): ?>
-      <?php if(is_null($this->keywords)):?>
-        initialSearch();
-      <?php else:?>
-        initialSearch('<?php echo $this->keywords?>');
-      <?php endif;?>
+    <?php if($action == 'search'):?>
+      var isSearchPerfomed = true;
+    <?php else:?>
+      var isSearchPerfomed = false;
     <?php endif;?>
-
 
     activateImagesTab('<?php echo $this->activeImagesTab?>');
 
@@ -77,7 +72,7 @@ if(!$this->images) {
       }).get();
       var index = 0;
       //if free and paid, select last active from those two, or paid if last active is not paid or free
-      if(tabs.indexOf('paid') != -1 && tabs.indexOf('free') != -1) {
+      if(isSearchPerfomed && tabs.indexOf('paid') != -1 && tabs.indexOf('free') != -1) {
         if(lastActive == 'paid' || lastActive == 'free') {
           index = tabs.indexOf(lastActive);
         } else {
