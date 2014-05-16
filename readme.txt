@@ -42,6 +42,9 @@ You can also make money with automatic Dreamstime referral program integration. 
 5. *Post with image downloaded from Dreamstime* view
 6. *Login / Create Account* view
 7. *Logged in* view
+8. *Previous downloads* view
+9. *Own images* view
+10. *Previously downloaded image* view
 
 == Changelog ==
 
