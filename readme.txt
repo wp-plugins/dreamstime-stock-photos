@@ -22,7 +22,7 @@ You can also make money with automatic Dreamstime referral program integration. 
 
 **Features:**
 
-* Over 22,000,000 free and Royalty-Free stock photos and illustrations to choose from
+* Over 25,000,000 free and Royalty-Free stock photos and illustrations to choose from
 * Insert directly into your posts or pages with ease
 * 100% safe, model released images
 * Image attribution automatically added
