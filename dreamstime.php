@@ -4,7 +4,7 @@
  * Plugin Name: Dreamstime Stock Photos
  * Plugin URI: http://www.dreamstime.com/wordpress-photo-image-plugin
  * Description: Search and insert images into your posts and pages from Dreamstime's vast database of Free and Royalty-Free stock photos & illustrations.
- * Version: 2.0
+ * Version: 2.2
  * Author: Dreamstime
  * Author URI: http://www.dreamstime.com
  * License: GPL2
@@ -70,9 +70,9 @@ class Dreamstime
     add_action("wp_ajax_ajxSearch", array($this, "ajxSearch"));
     add_action("wp_ajax_ajxSaveActiveImagesTab", array($this, "ajxSaveActiveImagesTab"));
     add_action("wp_ajax_ajxReview", array($this, "ajxReview"));
+    add_action("wp_ajax_ajxSetPostThumbnailAlt", array($this, "ajxSetPostThumbnailAlt"));
     add_action("admin_head", array($this, "setCurrentPost"));
 
-//unset($_SESSION['dreamstime']);
     require_once 'api.php';
     $this->api = new DreamstimeApi();
 
@@ -128,16 +128,21 @@ class Dreamstime
 
     wp_register_style( 'dreamstime', DREAMSTIME_STATIC_URL.'css/style.css' );
     wp_enqueue_style('dreamstime');
-    wp_register_script('dreamstime', DREAMSTIME_STATIC_URL.'js/dreamstime.js', array('jquery'));
+    wp_register_script('dreamstime', DREAMSTIME_STATIC_URL.'js/dreamstime.js', array('jquery'), false, true);
     wp_enqueue_script('dreamstime');
 
     $screen = get_current_screen();
-    if($screen->id == 'media-upload') {
+    if ($screen->id == 'media-upload') {
       wp_enqueue_style('jquery.ui.theme', '//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
 
       wp_deregister_script('jquery-ui-core');
       wp_register_script('jquery-ui-core', '//code.jquery.com/ui/1.10.3/jquery-ui.js');
       wp_enqueue_script('jquery-ui-core');
+    } else {
+      wp_register_script('dreamstime-media-views', DREAMSTIME_STATIC_URL.'js/media-views.js', array('jquery'), false, true);
+	  wp_enqueue_script('dreamstime-media-views');
+      $dreamstimeIframeSrc = get_admin_url(get_current_blog_id(), 'media-upload.php?chromeless=1&post_id=' . $this->postId . '&tab=dreamstime');
+      wp_localize_script('dreamstime-media-views', 'dreamstimeIframeSrc', $dreamstimeIframeSrc);
     }
 
   }
@@ -561,6 +566,18 @@ class Dreamstime
     exit;
   }
 
+  public function ajxSetPostThumbnailAlt()
+  {
+	  $alt = wp_strip_all_tags( $_REQUEST['alt'], true );
+	  $thumbnailId = intval($_REQUEST['thumbnail_id']);
+
+	  $oldAlt = get_post_meta($thumbnailId, '_wp_attachment_image_alt', true);
+	  $alt = $oldAlt . ' | ' . $alt;
+
+	  update_post_meta( $thumbnailId, '_wp_attachment_image_alt', wp_slash( $alt ) );
+	  exit;
+  }
+
   public function emptySearchCache() {
     $images = $this->images;
     unset($images['free'], $images['paid']);
@@ -712,7 +729,7 @@ class Dreamstime
 //    $url = get_permalink($post->ID);
     $url = $this->image->Image->DetailUrl;
     if(get_option('dreamstime_referral_state')) {
-      $url .= '#'.$this->user->ClientId;
+      $url .= '#res'.$this->user->ClientId;
     }
 
     $form_fields['url']['html'] = '<input type="text" class="text urlfield" name="attachments['.$post->ID.'][url]" value="'.$url.'" />';

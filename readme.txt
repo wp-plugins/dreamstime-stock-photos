@@ -4,7 +4,7 @@ Contributors: dreamstime
 Tags: dreamstime, photo, image, stock, stock images, dreamstime stock images, free photos, free images, stock photos, pictures, free pictures, illustrations, free illustrations, clipart, clip art, free clipart, free clip art, royalty free, stock photography, free stock photography, photography, free photography
 Requires at least: 3.5
 Tested up to: 3.9.1
-Stable tag: 2.0
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,12 @@ You can also make money with automatic Dreamstime referral program integration. 
 10. *Previously downloaded image* view
 
 == Changelog ==
+
+= 2.2 =
+* Added featured image
+
+= 2.1 =
+* Fixed referral links
 
 = 2.0 =
 * Free download for previously downloaded images

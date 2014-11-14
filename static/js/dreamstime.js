@@ -332,6 +332,20 @@
       }
     });
 
+    $(document.body).on('click', 'a.wp-post-thumbnail' ,function(event){
+      var thumbnailId = parseInt($(event.target).attr('id').substr($(event.target).attr('id').lastIndexOf('-') + 1));
+      var alt = $('tr.post_excerpt textarea').val();
+      $.ajax({
+        type: 'POST',
+        url: ajaxurl,
+        data: {
+          action: 'ajxSetPostThumbnailAlt',
+          alt: alt,
+          thumbnail_id: thumbnailId
+        },
+        dataType: 'html'
+      })
+    });
   });
 
-})( jQuery );
+}( jQuery ));
