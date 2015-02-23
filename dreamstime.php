@@ -4,7 +4,7 @@
  * Plugin Name: Dreamstime Stock Photos
  * Plugin URI: http://www.dreamstime.com/wordpress-photo-image-plugin
  * Description: Search and insert images into your posts and pages from Dreamstime's vast database of Free and Royalty-Free stock photos & illustrations.
- * Version: 2.2
+ * Version: 2.3
  * Author: Dreamstime
  * Author URI: http://www.dreamstime.com
  * License: GPL2
@@ -27,7 +27,8 @@
 */
 
 define('DREAMSTIME_STATIC_URL', plugin_dir_url(__FILE__).'static/' );
-
+ini_set('display_errors', false);
+error_reporting(0);
 
 
 class Dreamstime
